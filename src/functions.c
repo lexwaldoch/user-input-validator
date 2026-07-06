@@ -316,6 +316,7 @@ int Verify_Password(char pwd[], size_t len) {
         lower = 0;
     }
 
+    printf("Password is valid.\n");
     return 1;
 }
 /*
@@ -349,7 +350,7 @@ int Verify_Passwords_Match(char pwd1[], size_t len1, char pwd2[], size_t len2) {
         }
     }
 
-    printf("Password is valid.\n");
+    printf("Passwords match.\n");
     return 1;
 }
 
