@@ -39,7 +39,7 @@ int Verify_Username(char user[], size_t len) {
     dbgprintf("This line only prints if DEBUG is set to 1\n");
 
     if (*user < 'A' || (*user > 'Z' && *user < 'a') || *user > 'z'){
-        printf(ERROR_01_USER_START_INVALID);
+        printf("Username must begin with a letter.\n");
         return 0;
         }
     int count = 0;
@@ -47,7 +47,7 @@ int Verify_Username(char user[], size_t len) {
         count++;
     }
     if (count > 32){
-        printf(ERROR_02_USER_LEN_INVALID);
+        printf("Username must be 32 characters or less.\n");
         return 0;
     }
     int valid = 0;
@@ -66,13 +66,13 @@ int Verify_Username(char user[], size_t len) {
             valid = 1;
         }
         else if (valid == 0) {
-            printf(ERROR_03_USER_CHARS_INVALID);
+            printf("Username may only consist of letters, underscores, or digits.\n");
             return 0;
         }
         valid = 0;
     }
 
-    printf(SUCCESS_1_USER);
+    printf("Username is valid.\n");
     return 1;
 }
 
@@ -106,28 +106,21 @@ int Verify_Username(char user[], size_t len) {
  */
 int Verify_Email(char email[], size_t len) {
 
-    // Declare an at_pointer variable and search the string for the @ symbol.
-    // Declare an end_pointer and search the string for the ‘\0’ character.
-    // check to make sure I don't need extra quotes to make it work
     // Email addresses have 4 parts.  The name, the @ symbol, the domain, and the top-level domain.
     // everything before the @ is the name, everything after the @ and before the top level is the domain, etc.
     // The top-level domain is the last 4 characters and must be “.com”, “.edu”, or “.net” for this project.
     // The domain is all the characters between the @ symbol and the top-level domain.
-    // The domain may be broken into several subdomains each separated by ‘.’
-    // For example, doescher@cs.wisc.edu has the name “doescher”, the domain is “cs.wisc”, and consists of 2 subdomains “cs” and “wisc”.  The top-level domain is “.edu”
     // Note the domain does not include the top-level domain.
-    // The last character of the name is the character before the '@' symbol, or if the @ symbol is missing then the last character of the name becomes the last character of the domain.
-    // For example, in the incorrect email address “doescher.cs.wisc.edu”. We would test “doescher.cs.wisc” as the name and return the error “Invalid character in name”.
     // If both the @ symbol and the top-level domain are missing, test the entire string as the username
 
 
     if (email[0] == 64){
-        printf(ERROR_04_EMAIL_MISSING_NAME);
+        printf("Email is missing name.\n");
         return 0;
         }
 
     if (*email < 65 || (*email > 90 && *email < 97) || *email > 122){
-        printf(ERROR_05_EMAIL_START_INVALID);
+        printf("Email start is invalid.\n");
         return 0;
     }
     int count = 0;
@@ -144,7 +137,7 @@ int Verify_Email(char email[], size_t len) {
     }
 
     if (count_point > 32){
-        printf(ERROR_06_EMAIL_NAME_LEN_INVALID);
+        printf("Email name length is invalid.\n");
         return 0;
     }
     int valid = 0;
@@ -162,13 +155,13 @@ int Verify_Email(char email[], size_t len) {
            valid = 1;
         }
         else if (valid == 0){
-            printf(ERROR_07_EMAIL_NAME_CHARS_INVALID);
+            printf("Email name characters are invalid.\n");
             return 0;
         }
         valid = 0;
    }
     if (email[count_point] != 64){
-         printf(ERROR_08_EMAIL_MISSING_SYMBOL); // example mike.wisc.edu
+         printf("Email is missing @ symbol.\n"); 
          return 0;
     }
 
@@ -176,7 +169,7 @@ int Verify_Email(char email[], size_t len) {
     if (email[count_point + 2] == 101){
         if (email[count_point + 3] == 100){
             if (email[count_point + 4] == 117){
-                printf(ERROR_09_EMAIL_MISSING_DOMAIN);
+                printf("Email is missing domain."\n);
                 return 0;
             }
         }
@@ -186,7 +179,7 @@ int Verify_Email(char email[], size_t len) {
    if (email[count_point + 2] == 99){
         if (email[count_point + 3] == 111){
             if (email[count_point + 4] == 109){
-                printf(ERROR_09_EMAIL_MISSING_DOMAIN);
+                printf("Email is missing domain.\n");
                 return 0;
             }
         }
@@ -196,7 +189,7 @@ int Verify_Email(char email[], size_t len) {
     if (email[count_point + 2] == 110){
         if (email[count_point + 3] == 101){
             if (email[count_point + 4] == 116){
-                printf(ERROR_09_EMAIL_MISSING_DOMAIN); // example mike@.edu
+                printf("Email is missing domain.\n");
                 return 0;
             }
         }
@@ -205,12 +198,12 @@ int Verify_Email(char email[], size_t len) {
 
     int domain_size = count - count_point - 4;
     if (domain_size > 64){
-        printf(ERROR_10_EMAIL_DOMAIN_LEN_INVALID);
+        printf("Email domain length is invalid.\n");
         return 0;
     }
 
     if (email[count_point + 2] < 65 || (email[count_point + 2] > 90 && email[count_point + 2] < 97) || email[count_point + 2] > 122){
-        printf(ERROR_11_EMAIL_DOMAIN_START_INVALID);
+        printf("Email domain start is invalid.\n");
         return 0;
     }
 
@@ -219,7 +212,7 @@ int Verify_Email(char email[], size_t len) {
             break;
         }
         else{
-            printf(ERROR_12_EMAIL_DOMAIN_CHARS_INVALID);
+            printf("Email domain characters are invalid.\n");
             return 0;
         }
     }
@@ -255,11 +248,11 @@ int Verify_Email(char email[], size_t len) {
         }
     }
     else if (edu == 0 && net == 0 && com == 0) {
-        printf(ERROR_13_TOP_LEVEL_DOMAIN_INVALID);
+        printf("Top level domain is invalid.\n");
         return 0;
     }
 
-    printf(SUCCESS_2_EMAIL);
+    printf("Email is valid.\n");
     return 1;
 }
 
@@ -286,18 +279,18 @@ int Verify_Password(char pwd[], size_t len) {
     }
     for (int i = 0; i < count; i++){
         if (pwd[i] == 32){
-            printf(ERROR_14_PWD_SPACES_INVALID);
+            printf("Password may not contain spaces.\n");
             return 0;
         }
     }
 
     if (count < 8){
-        printf(ERROR_15_PWD_MIN_LEN_INVALID);
+        printf("Password length is invalid.\n");
         return 0;
     }
 
     if (count > 16){
-        printf(ERROR_16_PWD_MAX_LEN_INVALID);
+        printf("Password length is invalid.\n");
         return 0;
     }
     int upper = 0;
@@ -306,7 +299,7 @@ int Verify_Password(char pwd[], size_t len) {
             upper = 1;
         }
         else if (upper == 0){
-            printf(ERROR_17_PWD_MIN_UPPER_INVALID);
+            printf("Password must contain an uppercase character.\n");
             return 0;
         }
         upper = 0;
@@ -317,7 +310,7 @@ int Verify_Password(char pwd[], size_t len) {
             break;
         }
         else if (lower == 0){
-            printf(ERROR_18_PWD_MIN_LOWER_INVALID);
+            printf("Password must contain a lowercase character.\n");
             return 0;
         }
         lower = 0;
@@ -347,16 +340,16 @@ int Verify_Passwords_Match(char pwd1[], size_t len1, char pwd2[], size_t len2) {
 
     for (int i = 0; i < count1; i++){
         if (count1 != count2){
-            printf(ERROR_19_PWD_MATCH_INVALID);
+            printf("Password does not match.\n");
             return 0;
         }
         if (pwd1[i] != pwd2[i]){
-            printf(ERROR_19_PWD_MATCH_INVALID);
+            printf("Password does not match.\n");
             return 0;
         }
     }
 
-    printf(SUCCESS_3_PASSWORDS);
+    printf("Password is valid.\n");
     return 1;
 }
 
