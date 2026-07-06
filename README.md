@@ -46,6 +46,7 @@ user-input-validator/
 │   ├── functions.h
 │   └── main.c
 ├── tests/
+├── Makefile
 └── LICENSE
 ```
 
